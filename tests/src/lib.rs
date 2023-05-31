@@ -10,6 +10,8 @@ mod tests {
         string: String,
         #[default(gen_usize())]
         custom: usize,
+        #[default(vec![1, 2, 3])]
+        vector: Vec<u64>,
         empty: u64,
     }
 
@@ -19,6 +21,7 @@ mod tests {
         assert_eq!(t.integer, 10);
         assert_eq!(t.string, "test");
         assert_eq!(t.custom, 1);
+        assert_eq!(t.vector, &[1, 2, 3]);
         assert_eq!(t.empty, 0);
     }
 

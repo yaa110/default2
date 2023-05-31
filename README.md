@@ -19,6 +19,8 @@ struct Process {
     name: String,
     #[default(num_cpus::get())]
     cpus: usize,
+    #[default(vec![1, 2, 3])]
+    vector: Vec<u64>,
     payload: u64,
 }
 ```
@@ -35,10 +37,11 @@ struct Process {
 
 impl Default for Process {
     fn default() -> Self {
-        Self {
+        Process {
             id: 10,
             name: "main".into(),
             cpus: num_cpus::get(),
+            vector: vec![1, 2, 3],
             payload: Default::default(),
         }
     }
