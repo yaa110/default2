@@ -1,4 +1,4 @@
-# Default2
+# Default Derive
 
 [![Test](https://github.com/yaa110/default2/actions/workflows/build.yml/badge.svg)](https://github.com/yaa110/default2/actions/workflows/build.yml) [![crates.io](https://img.shields.io/crates/v/default2.svg)](https://crates.io/crates/default2)
 
@@ -6,21 +6,23 @@ Default implementation using macros
 
 ## Example
 
-Use `Default2` to set default value of each field using a macro:
+Use `default2::Default` to set default value of each field using a macro:
 
 ```rust
-use default2::Default2;
-
-#[derive(Default2)]
+#[derive(default2::Default)]
 struct Process {
     #[default(10)]
     id: i32,
+
     #[default("main".into())]
     name: String,
+
     #[default(num_cpus::get())]
     cpus: usize,
+
     #[default(vec![1, 2, 3])]
     vector: Vec<u64>,
+
     payload: u64,
 }
 ```

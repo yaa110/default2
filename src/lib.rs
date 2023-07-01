@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput, Expr, Fields};
 
-#[proc_macro_derive(Default2, attributes(default))]
+#[proc_macro_derive(Default, attributes(default))]
 pub fn default2(input: TokenStream) -> TokenStream {
     // Parse the input tokens into a syntax tree.
     let input = parse_macro_input!(input as DeriveInput);
@@ -13,7 +13,7 @@ pub fn default2(input: TokenStream) -> TokenStream {
     // Extract the fields of the struct.
     let fields = match &input.data {
         Data::Struct(data) => &data.fields,
-        _ => panic!("Default2 can only be used with structs"),
+        _ => panic!("Default can only be used with structs"),
     };
 
     // Generate the implementation of the Default trait.
@@ -40,7 +40,7 @@ fn generate_field_defaults(fields: &Fields) -> Vec<proc_macro2::TokenStream> {
             let default_attr = field
                 .attrs
                 .iter()
-                .find(|attr| attr.path.is_ident("default"));
+                .find(|attr| attr.path().is_ident("default"));
 
             match default_attr {
                 Some(attr) => {

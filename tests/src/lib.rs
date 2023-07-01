@@ -1,8 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use default2::Default2;
-
-    #[derive(Default2)]
+    #[derive(default2::Default)]
     struct TestDefault {
         #[default(10)]
         integer: i32,
