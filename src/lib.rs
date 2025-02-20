@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, Data, DeriveInput, Expr, Fields};
+use syn::{Data, DeriveInput, Expr, Fields, parse_macro_input};
 
 #[proc_macro_derive(Default, attributes(default))]
 pub fn default2(input: TokenStream) -> TokenStream {

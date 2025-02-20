@@ -1,17 +1,17 @@
 [package]
-edition = "2021"
-name = "default2"
-version = "1.0.0"
 authors = ["Navid <yaa110@gmail.com>"]
-homepage = "https://github.com/yaa110/default2"
-repository = "https://github.com/yaa110/default2"
-documentation = "https://docs.rs/default2"
-license = "MIT OR Apache-2.0"
-readme = "README.md"
-description = "Default implementation using macros"
 categories = ["development-tools", "development-tools::procedural-macro-helpers"]
-keywords = ["default", "derive"]
+description = "Default implementation using macros"
+documentation = "https://docs.rs/default2"
+edition = "2024"
 exclude = ["/.github", "tests"]
+homepage = "https://github.com/yaa110/default2"
+keywords = ["default", "derive"]
+license = "MIT OR Apache-2.0"
+name = "default2"
+readme = "README.md"
+repository = "https://github.com/yaa110/default2"
+version = "1.0.1"
 
 [lib]
 proc-macro = true
