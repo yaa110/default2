@@ -1,35 +1,36 @@
-# Default Derive
+# Default Macro
 
 [![Test](https://github.com/yaa110/default2/actions/workflows/build.yml/badge.svg)](https://github.com/yaa110/default2/actions/workflows/build.yml) [![crates.io](https://img.shields.io/crates/v/default2.svg)](https://crates.io/crates/default2)
 
-Default implementation using macros
+A convenient macro to implement `Default` for structs using field initializers.
 
 ## Example
 
-Use `default2::Default` to set default value of each field using a macro:
+Add this to your `Cargo.toml`:
+
+```toml
+[dependencies]
+default2 = "2"
+```
+
+Use the `default2::default!` macro to define a struct and its default values in one place.
 
 ```rust
-#[derive(default2::Default)]
-struct Process {
-    #[default(10)]
-    id: i32,
-
-    #[default("main".into())]
-    name: String,
-
-    #[default(num_cpus::get())]
-    cpus: usize,
-
-    #[default(vec![1, 2, 3])]
-    vector: Vec<u64>,
-
-    payload: u64,
+default2::default! {
+    #[derive(Debug, PartialEq)]
+    struct Process {
+        id: i32 = 10,
+        name: String = "main".into(),
+        cpus: usize = num_cpus::get(),
+        payload: u64,
+    }
 }
 ```
 
-The following code will be generated:
+The macro will generate the standard struct definition along with a `Default` implementation:
 
 ```rust
+#[derive(Debug, PartialEq)]
 struct Process {
     id: i32,
     name: String,
@@ -43,8 +44,7 @@ impl Default for Process {
             id: 10,
             name: "main".into(),
             cpus: num_cpus::get(),
-            vector: vec![1, 2, 3],
-            payload: Default::default(),
+            payload: std::default::Default::default(),
         }
     }
 }

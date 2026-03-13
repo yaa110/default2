@@ -4,14 +4,14 @@ categories = ["development-tools", "development-tools::procedural-macro-helpers"
 description = "Default implementation using macros"
 documentation = "https://docs.rs/default2"
 edition = "2024"
-exclude = ["/.github", "tests"]
+exclude = [".github", "tests"]
 homepage = "https://github.com/yaa110/default2"
 keywords = ["default", "derive"]
 license = "MIT OR Apache-2.0"
 name = "default2"
 readme = "README.md"
 repository = "https://github.com/yaa110/default2"
-version = "1.0.2"
+version = "2.0.0"
 
 [lib]
 proc-macro = true
