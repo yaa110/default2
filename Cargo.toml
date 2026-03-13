@@ -11,7 +11,7 @@ license = "MIT OR Apache-2.0"
 name = "default2"
 readme = "README.md"
 repository = "https://github.com/yaa110/default2"
-version = "2.0.0"
+version = "2.1.0"
 
 [lib]
 proc-macro = true

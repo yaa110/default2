@@ -111,7 +111,17 @@ pub fn default(item: TokenStream) -> TokenStream {
 
     let struct_name = &input.ident;
     let vis = &input.vis;
-    let attrs = &input.attrs;
+
+    let mut use_const_default = false;
+    let mut attrs = input.attrs.clone();
+    attrs.retain(|attr| {
+        if attr.path().is_ident("const_default") {
+            use_const_default = true;
+            false // remove it
+        } else {
+            true // keep it
+        }
+    });
 
     let (impl_generics, ty_generics, where_clause) = input.generics.split_for_impl();
 
@@ -132,6 +142,26 @@ pub fn default(item: TokenStream) -> TokenStream {
         }
     });
 
+    let const_default_impl = if use_const_default {
+        let const_field_defaults = field_defaults.clone();
+        quote! {
+            impl #impl_generics #struct_name #ty_generics #where_clause {
+                /// Creates a new instance of the struct with constant default values.
+                ///
+                /// This function is only available when the `#[const_default]` attribute is used.
+                /// The caller is responsible for ensuring that all default value expressions
+                /// are valid in a `const` context.
+                pub const fn const_default() -> Self {
+                    Self {
+                        #(#const_field_defaults,)*
+                    }
+                }
+            }
+        }
+    } else {
+        quote! {}
+    };
+
     let expanded = quote! {
         #(#attrs)*
         #vis struct #struct_name #ty_generics #where_clause {
@@ -145,6 +175,8 @@ pub fn default(item: TokenStream) -> TokenStream {
                 }
             }
         }
+
+        #const_default_impl
     };
 
     TokenStream::from(expanded)

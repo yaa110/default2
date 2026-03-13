@@ -1,6 +1,4 @@
-use default2::default;
-
-default! {
+default2::default! {
     struct TestDefault {
         id: i32 = 10,
         name: String = "main".into(),
@@ -10,7 +8,7 @@ default! {
     }
 }
 
-default! {
+default2::default! {
     struct TestDefaultWithWeirdSpacing {
         id: i32=10,
         name: String ="main".into(),
@@ -20,7 +18,7 @@ default! {
     }
 }
 
-default! {
+default2::default! {
     #[derive(Debug, PartialEq)]
     struct TestWithOtherDerives {
         id: i32 = 100,
@@ -28,7 +26,7 @@ default! {
     }
 }
 
-default! {
+default2::default! {
     /// This is a test struct with doc comments.
     struct TestWithDocs {
         /// This is the ID.
@@ -36,6 +34,22 @@ default! {
 
         #[doc = "This is the name."]
         name: String,
+    }
+}
+
+default2::default! {
+    #[const_default]
+    struct TestConstDefault {
+        id: i32 = 42,
+        name: &'static str = "hello",
+    }
+}
+
+mod visibility_test_module {
+    default2::default! {
+        pub(crate) struct TestVisibility {
+            pub id: i32 = 42,
+        }
     }
 }
 
@@ -94,4 +108,22 @@ fn test_struct_with_docs() {
     let s = TestWithDocs::default();
     assert_eq!(s.id, 100);
     assert_eq!(s.name, "");
+}
+
+#[test]
+fn test_const_default() {
+    const MY_CONST_INSTANCE: TestConstDefault = TestConstDefault::const_default();
+    assert_eq!(MY_CONST_INSTANCE.id, 42);
+    assert_eq!(MY_CONST_INSTANCE.name, "hello");
+
+    // Also check the normal default
+    let default_instance = TestConstDefault::default();
+    assert_eq!(default_instance.id, 42);
+    assert_eq!(default_instance.name, "hello");
+}
+
+#[test]
+fn test_visibility_is_handled_correctly() {
+    let instance = visibility_test_module::TestVisibility::default();
+    assert_eq!(instance.id, 42);
 }

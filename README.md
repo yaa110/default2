@@ -4,7 +4,7 @@
 
 A convenient macro to implement `Default` for structs using field initializers.
 
-## Example
+## Usage
 
 Add this to your `Cargo.toml`:
 
@@ -13,12 +13,13 @@ Add this to your `Cargo.toml`:
 default2 = "2"
 ```
 
+## Example
+
 Use the `default2::default!` macro to define a struct and its default values in one place.
 
 ```rust
 default2::default! {
-    #[derive(Debug, PartialEq)]
-    struct Process {
+    pub struct Process {
         id: i32 = 10,
         name: String = "main".into(),
         cpus: usize = num_cpus::get(),
@@ -29,9 +30,8 @@ default2::default! {
 
 The macro will generate the standard struct definition along with a `Default` implementation:
 
-```rust
-#[derive(Debug, PartialEq)]
-struct Process {
+```rust,ignore
+pub struct Process {
     id: i32,
     name: String,
     cpus: usize,
@@ -48,4 +48,30 @@ impl Default for Process {
         }
     }
 }
+```
+
+### Const Defaults
+
+You can also generate a `const` default function by adding the `#[const_default]` attribute to your struct. This will generate an inherent method `const_default()`.
+
+You are responsible for ensuring that all default value expressions are valid in a `const` context.
+
+```rust,ignore
+use default2::default;
+
+default! {
+    #[const_default]
+    pub struct MyConfig {
+        timeout: u32 = 500,
+        name: &'static str = "default_config",
+    }
+}
+
+// You can now create a const instance:
+const MY_CONFIG: MyConfig = MyConfig::const_default();
+assert_eq!(MY_CONFIG.timeout, 500);
+
+// The standard non-const Default trait is still implemented:
+let other_config = MyConfig::default();
+assert_eq!(other_config.name, "default_config");
 ```
